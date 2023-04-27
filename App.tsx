@@ -1,53 +1,40 @@
 import { StatusBar } from 'expo-status-bar';
-import {Button, FlatList, SafeAreaView, StyleSheet, Text, TextInput, View} from 'react-native';
+import {Button, FlatList, SafeAreaView, StyleSheet, View} from 'react-native';
 import {useState} from "react";
+import GoalInput from "./components/GoalInput";
+import GoalText from "./components/GoalText";
 
 export default function App() {
-  const [enteredGoal, setEnteredGoal] = useState('');
-  const [goals, setGoals] = useState<string[]>([]); // string[] is an array of strings
+  const [goals, setGoals] = useState<string[]>([]);
 
-  const handleGoalInput = (enteredText: string) => {
-    setEnteredGoal(enteredText);
-  }
-
-  const addGoalHandler = () => {
-    if (enteredGoal == '') {
-        return;
-    }
+  const addGoalHandler = (enteredGoal: string) => {
     setGoals(currentGoals => [...currentGoals, enteredGoal]);
-  }
+  };
 
   const clearGoalInput = () => {
     setGoals([]);
-  }
+  };
 
   const handleRemoveGoal = (index: number) => {
     setGoals(currentGoals => {
-      const newGoals = [...currentGoals];
-      newGoals.splice(index, 1);
-      return newGoals;
+      return currentGoals.filter((goal, i) => i !== index);
     });
-  }
+  };
 
   return (
     <View style={containerStyles.appContainer}>
-      <View style={containerStyles.inputContainer}>
-        <TextInput
-            placeholder="Today's Goals!"
-            style={textStyles.textInput}
-            onChangeText={handleGoalInput}
-        />
-        <Button title={"Add Goal"} onPress={addGoalHandler} />
-      </View>
+      <GoalInput
+          addGoalHandler={addGoalHandler}
+          containerStyles={containerStyles}
+          textStyles={textStyles}
+      />
       <SafeAreaView
           style={containerStyles.goalsContainer}
       >
         <FlatList
             data={goals}
             renderItem={itemData => (
-                <View>
-                  <Text style={textStyles.textGoal} onPress={() => handleRemoveGoal(itemData.index)}>{itemData.item}</Text>
-                </View>
+                <GoalText itemData={itemData} handleRemoveGoal={handleRemoveGoal} textStyles={textStyles}/>
             )}
         />
       </SafeAreaView>
@@ -101,7 +88,6 @@ const textStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     marginBottom: 10,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    padding: 10,
   }
 });
