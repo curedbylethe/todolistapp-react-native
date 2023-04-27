@@ -2,6 +2,8 @@
 
 This is a simple todo list app built using React Native and its components for the UI.
 
+The project was developed as part of my journey to learn React Native. I closely followed Maximilian Schwarzmüller's comprehensive course [React Native - The Practical Guide](https://www.udemy.com/course/react-native-the-practical-guide) on Udemy to build this app.
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
