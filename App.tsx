@@ -6,6 +6,7 @@ import GoalText from "./components/GoalText";
 
 export default function App() {
   const [goals, setGoals] = useState<string[]>([]);
+  const [isAddMode, setIsAddMode] = useState<boolean>(false);
 
   const addGoalHandler = (enteredGoal: string) => {
     setGoals(currentGoals => [...currentGoals, enteredGoal]);
@@ -21,73 +22,100 @@ export default function App() {
     });
   };
 
+  const startAddMode = () => {
+    setIsAddMode((currentMode : boolean) => !currentMode);
+  };
+
+  const endAddMode = () => {
+    setIsAddMode((currentMode : boolean) => false);
+  }
+
   return (
-    <View style={containerStyles.appContainer}>
-      <GoalInput
-          addGoalHandler={addGoalHandler}
-          containerStyles={containerStyles}
-          textStyles={textStyles}
-      />
-      <SafeAreaView
-          style={containerStyles.goalsContainer}
-      >
-        <FlatList
-            data={goals}
-            renderItem={itemData => (
-                <GoalText itemData={itemData} handleRemoveGoal={handleRemoveGoal} textStyles={textStyles}/>
-            )}
-        />
-      </SafeAreaView>
-      <View style={containerStyles.clearAllButton}>
-        <Button title={"Clear Input"} onPress={clearGoalInput}/>
-      </View>
-    </View>
+      <>
+        <StatusBar style="light" />
+        <View style={containerStyles.appContainer}>
+          <View style={containerStyles.startAddModeButton}>
+            <Button title={"Add New Goal"} onPress={startAddMode} color={'#1CD6CE'}/>
+          </View>
+          <GoalInput
+              visible={isAddMode}
+              addGoalHandler={addGoalHandler}
+              containerStyles={containerStyles}
+              textStyles={textStyles}
+              handleCancel={endAddMode}
+          />
+          <SafeAreaView
+              style={containerStyles.goalsContainer}
+          >
+            <FlatList
+                data={goals}
+                renderItem={itemData => (
+                    <GoalText itemData={itemData} handleRemoveGoal={handleRemoveGoal} textStyles={textStyles}/>
+                )}
+            />
+          </SafeAreaView>
+          <View style={containerStyles.clearAllButton}>
+            <Button title={"Clear All Goals"} onPress={clearGoalInput} color={'#D61C4E'}/>
+          </View>
+          </View>
+      </>
   );
 }
 
 const containerStyles = StyleSheet.create({
   appContainer: {
     flex: 1,
-    paddingTop: 50,
+    paddingTop: 25,
     paddingHorizontal: 15,
   },
   inputContainer: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 10,
-    borderBottomWidth: 2,
-    borderBottomColor: '#ccc',
+    padding: 16,
+    backgroundColor: '#293462',
   },
   goalsContainer: {
     flex: 6,
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'stretch',
-
   },
   clearAllButton: {
     flex: 1,
-    borderTopWidth: 2,
+    borderTopWidth: 1,
     borderTopColor: '#ccc',
     justifyContent: 'center',
     marginTop: 10,
   },
+  startAddModeButton: {
+    flex: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    justifyContent: 'center',
+    marginBottom: 10,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 16,
+  }
 });
 
 const textStyles = StyleSheet.create({
   textInput: {
-    borderWidth: 2,
-    borderColor: '#ccc',
-    padding: 10,
-    marginRight: 4,
-    width: '70%'
+    width: '90%',
+    borderWidth: 1,
+    padding: 12,
+    color: '#293462',
+    backgroundColor: '#e4d0ff',
+    borderColor: '#e4d0ff',
+    borderRadius: 6,
   },
   textGoal: {
     borderWidth: 1,
-    borderColor: '#ccc',
     marginBottom: 10,
     padding: 10,
+    borderRadius: 6,
   }
 });

@@ -10,17 +10,17 @@ export default function GoalText({itemData, handleRemoveGoal, textStyles}: GoalT
     return (
         <View style={{flex: 1}}>
             <Pressable
-                android_ripple={{color: '#ddd'}}
+                android_ripple={{color: '#D61C4E'}}
                 style={({pressed}) => [
                     {
-                        backgroundColor: pressed ? '#ddd' : 'transparent',
+                        backgroundColor: pressed ? '#D61C4E' : '#e4d0ff',
+                        borderColor: pressed ? '#D61C4E' : '#e4d0ff',
                     },
                     textStyles.textGoal,
                 ]}
+                onPress={() => handleRemoveGoal(itemData.index)}
             >
-                <Text
-                    onPress={() => handleRemoveGoal(itemData.index)}>{itemData.item}
-                </Text>
+                <Text>{itemData.item}</Text>
             </Pressable>
         </View>
     )
